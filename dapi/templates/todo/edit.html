@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+
+{% block title %}Todo{% endblock title %} 
+
+{% block body %}
+
+{% if item %}
+    <form class="d-flex" method="POST">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="{{item.item}}" aria-label="Search" value="{{item.item}}" name="item">
+        <input type="hidden" value="{{item.completed}}" name="completed">
+        <button class="btn btn-outline-secondary" type="submit">Edit</button>
+    </form>
+{% endif %}
+{% endblock body %}

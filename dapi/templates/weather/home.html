@@ -1,0 +1,61 @@
+{% extends 'base.html' %} 
+
+{% block title %}Weather{% endblock title %} 
+
+{% block weather %}active{% endblock weather %}
+
+{% block style %}
+.good {
+    background-color: #0C0 ;
+}
+.moderate {
+    background-color: #FFFF00 ;
+}
+.usg{
+    background-color: #FF9900 ;
+}
+.unhealthy {
+    background-color: #FF0000 ;
+}
+.veryunhealthy {
+    background-color: #990066 ;
+}
+.hazardous {
+    background-color: #660000 ;
+}
+{% endblock style %}
+
+{% block search %}
+<form action="{% url 'home' %}" class="d-flex" method="POST">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Enter USA Zipcode" aria-label="Search" name="zipcode">
+    <button class="btn btn-outline-secondary" type="submit">Lookup</button>
+</form>
+{% endblock search %}
+
+{% block body %}
+<br/>
+{% if zipcode %}
+{{ zipcode }}
+{% endif %}
+
+{% if api %}
+    {% if api == "Error..." %}
+        There was Error try again 
+    {% else %} 
+        <div class="card text-white {{category_color}} mb-3" >
+            <div class="card-header">{{ api.0.ReportingArea }}</div>
+                <div class="card-body">
+                <h2 class="card-title">{{ api.0.Category.Name }}</h2>
+                <h4 class="card-title">Current Air Quality: {{ api.0.AQI }}</h4>
+
+                {{ category_description}}
+                
+                
+            </div>
+        </div>
+        <br/>
+    {% endif %}
+{% endif %}
+
+{% endblock body %}

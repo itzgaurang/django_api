@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Stocks{% endblock title %}
+
+{% block stock %}active{% endblock stock %}
+
+{% block nav_item %}
+    <ul class="nav nav-pills nav-justified">
+        <li class="nav-item">
+            <a class="btn active btn-secondary" aria-current="page" href=" {% url 'add_stock' %} ">Add Stock</a>
+        </li>
+    </ul>
+{% endblock nav_item %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success! </strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </br>
+        </div>
+        
+    {% endfor %}
+{% endif %}
+
+{% if ticker %}
+    {% for item in ticker %}
+        <a class="btn btn-danger" href=" {% url 'delete' item.id %} "> Delete {{ item }} </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {% endfor %}
+{% else %}
+    You Don't Have any Stocks
+{% endif %}
+
+
+{% endblock body %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Stocks{% endblock title %}
+
+{% block stock %}active{% endblock stock %}
+
+{% block nav_item %}
+    <div class="btn-group" role="group" aria-label="Basic example">
+            <a class="btn active btn-secondary" aria-current="page" href=" {% url 'add_stock' %} ">Add Stock</a>
+    </div>
+{% endblock nav_item %}
+
+{% block search %}
+<form action=" {% url 'home' %} " class="d-flex" method="POST">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Get Stock Quote" aria-label="Search" name="ticker">
+    <div class="d-grid gap-2 col-4 mx-auto">
+    <button class="btn btn-outline-secondary" type="submit">Stock Quote</button>
+    </div>
+</form>
+{% endblock search %}
+
+
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success! </strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+    {% endfor %}
+{% endif %}
+
+{% if ticker %}
+ {{ ticker }}
+{% endif %}
+
+{% if api %}
+   {% if api == "Error..." %}
+        There was problem with ticker symbol, try again!
+    {% else %}
+        <h1>{{ api.companyName }}</h1><br/>
+        <h4>Price:  ${{ api.latestPrice }}</h4><br/>
+        <h4>Previous Close: ${{ api.previousClose }}</h4><br/>
+        <h4>Market Cap: {{ api.marketCap }}</h4><br/>
+        <h4>YTD Change: {{ api.ytdChange }}</h4><br/>
+        <h4>52 Week High: {{ api.week52High }}</h4><br/>
+        <h4>52 Week Low: {{ api.week52Low }}</h4><br/>
+    {% endif %}
+
+{% endif %}
+
+{% endblock body %}

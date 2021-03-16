@@ -1,0 +1,56 @@
+{% extends 'base.html' %} 
+
+{% block title %}Todo{% endblock title %} 
+
+{% block todo %}active{% endblock todo %}
+
+
+{% block search %}
+<form class="d-flex" method="POST">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Enter Todo" aria-label="Search" name="item">
+    <button class="btn btn-outline-secondary" type="submit">Add</button>
+</form>
+{% endblock search %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success! </strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+    {% endfor %}
+{% endif %}
+
+{% if all_items %}
+    <table class="table table-bordered table-dark table-hover">
+    <thead>
+    <tr>
+      <th scope="col"><center>Item</th>
+      <th scope="col"><center>Completed</th>
+      <th scope="col"><center></th>
+    </tr>
+  </thead>
+    {% for things in all_items %}
+    {% if things.completed %}
+    <tbody>
+    <tr class="table-success"">
+      <td style="text-decoration: line-through;"><center><a href="{% url 'edit' things.id %}" class="link-dark text-decoration-none">{{ things.item }}</a></td>
+      <td><center><a href=" {% url 'uncross' things.id %} " class="link-dark text-decoration-none">Uncross</a></td>
+      <td><center> <a href="{% url 'delete' things.id %}" class="link-dark text-decoration-none"> Delete</a></td>
+    </tr>
+    {% else %}
+    <tr class="table-secondary">
+      <td><center><a href="{% url 'edit' things.id %}" class="link-dark text-decoration-none">{{ things.item }}</a></td>
+      <td><center><a href=" {% url 'cross_off' things.id %} " class="link-dark text-decoration-none">Cross Off</a></td>
+      <td><center> <a href="{% url 'delete' things.id %}" class="link-dark text-decoration-none"> Delete</a></td>
+    </tr>
+    {% endif %}
+  </tbody>
+    {% endfor %}
+    </table>
+{% endif %}
+{% endblock body %}
